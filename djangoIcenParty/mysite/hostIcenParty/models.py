@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib import admin
-import json
 
 
 # Create your models here.
