@@ -104,3 +104,13 @@ class BuyProductAdmin(admin.ModelAdmin):
 
     get_product.short_description = 'Product'
     get_product.admin_order_field = 'product_name__title'
+
+
+class DocumentsApp(models.Model):
+    name = models.CharField(max_length=100)
+    file_document = models.FileField(upload_to='documents/documents/', null=True, blank=True)
+
+
+class DocumentsAppAdmin(admin.ModelAdmin):
+    model = StatusBuy
+    list_display = ['name']
