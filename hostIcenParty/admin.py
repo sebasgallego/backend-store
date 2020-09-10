@@ -2,7 +2,7 @@ from django.contrib import admin
 from .models import Product, ProductAdmin, \
     Genero, GeneroAdmin, \
     TypeProduct, TypeProductAdmin, \
-    BuyProduct, BuyProductAdmin, \
+    OrdersProduct, OrdersProductAdmin, \
     DocumentsApp, DocumentsAppAdmin, \
     StatusBuy, StatusBuyAdmin
 
@@ -10,6 +10,6 @@ from .models import Product, ProductAdmin, \
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Genero, GeneroAdmin)
 admin.site.register(TypeProduct, TypeProductAdmin)
-admin.site.register(BuyProduct, BuyProductAdmin)
+admin.site.register(OrdersProduct, OrdersProductAdmin)
 admin.site.register(StatusBuy, StatusBuyAdmin)
 admin.site.register(DocumentsApp, DocumentsAppAdmin)

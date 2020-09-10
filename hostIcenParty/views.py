@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 import json
-from .models import Product, StatusBuy, BuyProduct
+from .models import Product, StatusBuy, OrdersProduct
 from .models import Genero
 from django.core import serializers
 from django.views.decorators.csrf import csrf_exempt
@@ -17,9 +17,9 @@ def doOrders(request):
         phone_contact = request.GET['phone_contact']
         is_finish_ = request.GET['is_finish']
         is_finish = to_bool(is_finish_)
-        allBuys = BuyProduct.objects.filter(address=address,
-                                            phone_contact=phone_contact,
-                                            is_finish=is_finish)
+        allBuys = OrdersProduct.objects.filter(address=address,
+                                               phone_contact=phone_contact,
+                                               is_finish=is_finish)
         if len(allBuys) == 0:
             if is_finish:
                 message = "No tiene historial de pedidos"
@@ -116,19 +116,19 @@ def doAddBuy(request):
         objectProduct = Product.objects.get(pk=body['pk_product'])
         fileBase64 = "data:image/png;base64," + body['file_img_bill']
         file_img_bill = base64_file(data=fileBase64, name="img_bill")
-        p = BuyProduct(phone_contact=body['phone'],
-                       name_contact=body['name'],
-                       city=body['city'],
-                       neighborhood=body['neighborhood'],
-                       address=body['address'],
-                       type_house=body['typeHouse'],
-                       units=body['units'],
-                       value=body['value'],
-                       size=body['size'],
-                       file_img_home=body['file_img_home'],
-                       status_buy=objectStatusBuy,
-                       file_img_bill=file_img_bill,
-                       product_name=objectProduct)
+        p = OrdersProduct(phone_contact=body['phone'],
+                          name_contact=body['name'],
+                          city=body['city'],
+                          neighborhood=body['neighborhood'],
+                          address=body['address'],
+                          type_house=body['typeHouse'],
+                          units=body['units'],
+                          value=body['value'],
+                          size=body['size'],
+                          file_img_home=body['file_img_home'],
+                          status_buy=objectStatusBuy,
+                          file_img_bill=file_img_bill,
+                          product_name=objectProduct)
         p.save()
 
         dataJson = {

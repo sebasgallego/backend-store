@@ -90,7 +90,7 @@ class StatusBuyAdmin(admin.ModelAdmin):
     list_display = ['name']
 
 
-class BuyProduct(models.Model):
+class OrdersProduct(models.Model):
     is_finish = models.BooleanField(default=False)
     phone_contact = models.CharField(max_length=100)
     name_contact = models.CharField(max_length=100)
@@ -107,8 +107,8 @@ class BuyProduct(models.Model):
     file_img_bill = models.FileField(upload_to='documents/bill/', null=True, blank=True)
 
 
-class BuyProductAdmin(admin.ModelAdmin):
-    model = BuyProduct
+class OrdersProductAdmin(admin.ModelAdmin):
+    model = OrdersProduct
     list_display = ['address', 'get_product', 'value', 'name_contact', 'phone_contact', 'get_status']
 
     def get_status(self, obj):
