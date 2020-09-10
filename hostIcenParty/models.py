@@ -3,11 +3,6 @@ from django.contrib import admin
 
 
 # Create your models here.
-class Test(models.Model):
-    name = models.CharField(max_length=100)
-
-    def __str__(self):
-        return "%s" % self.name
 
 
 class TypeProduct(models.Model):
