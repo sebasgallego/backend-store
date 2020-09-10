@@ -28,6 +28,11 @@ class GeneroAdmin(admin.ModelAdmin):
     list_display = ['name']
 
 
+class ProductManager(models.Manager):
+    def get_by_natural_key(self, title):
+        return self.get(title=title)
+
+
 class Product(models.Model):
     file_img_home = models.FileField(upload_to='documents/img/', null=True, blank=True)
     file_img_2 = models.FileField(upload_to='documents/img/', null=True, blank=True)
@@ -43,9 +48,16 @@ class Product(models.Model):
     brand = models.CharField(max_length=100, default='')
     sizes_list = models.TextField(max_length=50, default='[S,M,L]')
     is_active = models.BooleanField(default=True)
+    objects = ProductManager()
 
     def __str__(self):
         return "%s" % self.title
+
+    class Meta:
+        unique_together = ['title']
+
+    def natural_key(self):
+        return self.title
 
 
 class ProductAdmin(admin.ModelAdmin):
@@ -62,6 +74,9 @@ class StatusBuy(models.Model):
     name = models.CharField(max_length=100)
     objects = StatusBuyManager()
 
+    def __str__(self):
+        return "%s" % self.name
+
     class Meta:
         unique_together = ['name']
 
@@ -75,6 +90,7 @@ class StatusBuyAdmin(admin.ModelAdmin):
 
 
 class BuyProduct(models.Model):
+    is_finish = models.BooleanField(default=False)
     phone_contact = models.CharField(max_length=100)
     name_contact = models.CharField(max_length=100)
     city = models.CharField(max_length=100)
@@ -87,6 +103,7 @@ class BuyProduct(models.Model):
     file_img_home = models.CharField(max_length=100, default="None")
     status_buy = models.ForeignKey(StatusBuy, on_delete=models.CASCADE, default=1)
     product_name = models.ForeignKey(Product, on_delete=models.CASCADE, default=1)
+    file_img_bill = models.FileField(upload_to='documents/bill/', null=True, blank=True)
 
 
 class BuyProductAdmin(admin.ModelAdmin):

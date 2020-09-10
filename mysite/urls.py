@@ -15,7 +15,6 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from django.conf.urls import url
 from hostIcenParty import views
 from django.conf import settings
 from django.conf.urls.static import static
@@ -24,5 +23,5 @@ urlpatterns = [
                   path('admin/', admin.site.urls),
                   path('icenPartyWeb/api/v1/doStore', views.doProducts, name='doStore'),
                   path('icenPartyWeb/api/v1/doAddBuy', views.doAddBuy, name='doAddBuy'),
-                  path('icenPartyWeb/api/v1/doBuyActive', views.doBuyActive, name='doBuyActive'),
+                  path('icenPartyWeb/api/v1/doOrders', views.doOrders, name='doOrders'),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

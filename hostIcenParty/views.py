@@ -6,21 +6,39 @@ from .models import Genero
 from django.core import serializers
 from django.views.decorators.csrf import csrf_exempt
 
-
 # Create your views here.
+from .tests import *
+
+
 @csrf_exempt
-def doBuyActive(request):
+def doOrders(request):
     if request.method == 'GET':
         address = request.GET['address']
         phone_contact = request.GET['phone_contact']
+        is_finish_ = request.GET['is_finish']
+        is_finish = to_bool(is_finish_)
         allBuys = BuyProduct.objects.filter(address=address,
-                                            phone_contact=phone_contact)
+                                            phone_contact=phone_contact,
+                                            is_finish=is_finish)
+        if len(allBuys) == 0:
+            if is_finish:
+                message = "No tiene historial de pedidos"
+            else:
+                message = "No tiene pedidos activos"
+            data = {
+                'success': False,
+                'message': message
+            }
+            dump = json.dumps(data)
+            return HttpResponse(dump, content_type='application/json')
+
         dataBuys = serializers.serialize("json", list(allBuys),
                                          fields=('title',
                                                  'size',
                                                  'file_img_home',
                                                  'units',
                                                  'value',
+                                                 'product_name',
                                                  'status_buy'),
                                          use_natural_foreign_keys=True,
                                          use_natural_primary_keys=True)
@@ -94,10 +112,10 @@ def doAddBuy(request):
     if request.method == 'POST':
         body_unicode = request.body.decode('utf-8')
         body = json.loads(body_unicode)
-
         objectStatusBuy = StatusBuy.objects.get(pk=body['pk_statusBuy'])
         objectProduct = Product.objects.get(pk=body['pk_product'])
-
+        fileBase64 = "data:image/png;base64," + body['file_img_bill']
+        file_img_bill = base64_file(data=fileBase64, name="img_bill")
         p = BuyProduct(phone_contact=body['phone'],
                        name_contact=body['name'],
                        city=body['city'],
@@ -109,6 +127,7 @@ def doAddBuy(request):
                        size=body['size'],
                        file_img_home=body['file_img_home'],
                        status_buy=objectStatusBuy,
+                       file_img_bill=file_img_bill,
                        product_name=objectProduct)
         p.save()
 
